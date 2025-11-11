@@ -7,8 +7,6 @@
 
 <div class="container mt-4 mb-4">
     <h1 class="mb-4 text-center fw-bold">Latest Posts</h1>
-    <i class="bi bi-trash"></i>
-
     <div class="row g-4">
         <?php foreach ($posts as $post): ?>
         <div class="col-md-4">
