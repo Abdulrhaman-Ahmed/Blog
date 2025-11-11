@@ -13,15 +13,24 @@ if (isset($_POST['add_category'])) {
         $message = 'Category name is required!';
         $message_type = 'danger';
     } else {
-        $stmt = $pdo->prepare("INSERT INTO categories (name, description) VALUES (?, ?)");
-        $stmt->execute([$name, $description]);
-        $message = 'Category added successfully!';
-        $message_type = 'success';
+        try {
+            $stmt = $pdo->prepare("INSERT INTO categories (name) VALUES (?)");
+            $stmt->execute([$name]);
+            $message = "Category added successfully!";
+            $message_type = "success";
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000) {
+                $message = "Category already exists!";
+                $message_type = "warning";
+            } else {
+                throw $e;
+            }
+        }
     }
 }
 
 if (isset($_GET['del_id'])) {
-    $del_id = (int) $_GET['del_id'];
+    $del_id =  $_GET['del_id'];
     $stmt = $pdo->prepare("DELETE FROM categories WHERE id = ?");
     $stmt->execute([$del_id]);
     header('Location: categories.php');
@@ -30,7 +39,7 @@ if (isset($_GET['del_id'])) {
 
 // update category
 if (isset($_POST['update_category']) && isset($_GET['edit_id'])) {
-    $edit_id = (int) $_GET['edit_id'];
+    $edit_id =  $_GET['edit_id'];
     $name = $_POST['name'] ?? '';
     $description = $_POST['description'] ?? '';
     if (empty($name)) {
@@ -45,7 +54,7 @@ if (isset($_POST['update_category']) && isset($_GET['edit_id'])) {
 }
 
 $stmt = $pdo->query("SELECT * FROM categories ORDER BY created_at DESC");
-$categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$categories = $stmt->fetchAll();
 ?>
 
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
@@ -128,7 +137,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $edit_id = $_GET['edit_id'];
             $s = $pdo->prepare("SELECT * FROM categories WHERE id = ?");
             $s->execute([$edit_id]);
-            $cat = $s->fetch(PDO::FETCH_ASSOC);
+            $cat = $s->fetch();
             if ($cat):
                 ?>
                 <div class="card mt-4">
@@ -146,6 +155,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <input type="text" class="form-control" name="description" value="<?= $cat['description']; ?>">
                             </div>
                             <div class="col-md-2">
+
                                 <button type="submit" class="btn btn-warning w-100" name="update_category"><i
                                         class="bi bi-pencil-square"></i> Update</button>
                             </div>
