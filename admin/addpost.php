@@ -3,9 +3,6 @@ include '../config/database.php';
 include 'includes/header.php';
 include 'includes/sidebar.php';
 
-$message = '';
-$message_type = '';
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $_POST['title'] ?? '';
     $content = $_POST['content'] ?? '';
