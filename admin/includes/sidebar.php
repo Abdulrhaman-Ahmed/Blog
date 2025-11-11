@@ -39,7 +39,7 @@
         </h6>
         <ul class="nav flex-column mb-2">
             <li class="nav-item">
-                <a class="nav-link" href="users/index.php">
+                <a class="nav-link" href="../index.php">
                     <i class="bi bi-people"></i> Users
                 </a>
             </li>
