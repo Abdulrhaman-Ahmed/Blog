@@ -3,6 +3,8 @@ include '../config/database.php';
 include 'includes/Header.php';
 include 'includes/sidebar.php';
 
+$message = '';
+$message_type = '';
 
 if (isset($_POST['add_category'])) {
     $name = trim($_POST['name'] ?? '');
