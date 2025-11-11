@@ -8,7 +8,7 @@
 <div class="container mt-4 mb-4">
     <h1 class="mb-4 text-center fw-bold">Latest Posts</h1>
     <div class="row g-4">
-        <?php foreach ($posts as $post): ?>
+        <?php foreach ($posts as $post){ ?>
         <div class="col-md-4">
             <div class="card shadow-sm h-100">
 
@@ -36,7 +36,7 @@
                 </div>
             </div>
         </div>
-        <?php endforeach; ?>
+        <?php }; ?>
 
         <?php if (empty($posts)): ?>
         <p class="text-center text-muted">No posts available.</p>
