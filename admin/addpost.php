@@ -1,5 +1,5 @@
 <?php
-require_once '../config/database.php';
+include '../config/database.php';
 include 'includes/header.php';
 include 'includes/sidebar.php';
 
@@ -52,9 +52,9 @@ $cats = $pdo->query("SELECT * FROM categories")->fetchAll(PDO::FETCH_ASSOC);
                     <div class="mb-3">
                         <label class="form-label">Category</label>
                         <select class="form-select" name="category_id" required>
-                            <?php foreach ($cats as $c): ?>
-                                <option value="<?php echo $c['id']; ?>"><?php echo $c['name']; ?></option>
-                            <?php endforeach; ?>
+                            <?php foreach ($cats as $c){ ?>
+                                <option value="<?= $c['id']; ?>"><?= $c['name']; ?></option>
+                            <?php }; ?>
                         </select>
                     </div>
                     <div class="mb-3">

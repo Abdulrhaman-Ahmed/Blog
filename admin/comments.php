@@ -1,13 +1,11 @@
 <?php
-require_once '../config/database.php';
+include '../config/database.php';
 include 'includes/Header.php';
 include 'includes/sidebar.php';
 
-$message = '';
-$message_type = '';
 
 if (isset($_GET['action']) && isset($_GET['id'])) {
-    $comment_id = (int) $_GET['id'];
+    $comment_id = $_GET['id'];
     $action = $_GET['action'];
 
     if ($action === 'approve') {
@@ -60,10 +58,10 @@ $rejected_comments = $pdo->query("SELECT COUNT(*) FROM comments WHERE status = '
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($comments as $comment): ?>
+                            <?php foreach ($comments as $comment){ ?>
                                 <tr>
-                                    <td><?php echo $comment['id']; ?></td>
-                                    <td><?php echo $comment['name']; ?></td>
+                                    <td><?= $comment['id']; ?></td>
+                                    <td><?= $comment['name']; ?></td>
                                     <td><?php echo$comment['comment']; ?></td>
                                     <td>
                                         <?php if ($comment['status'] == 'approved'): ?>
@@ -74,21 +72,21 @@ $rejected_comments = $pdo->query("SELECT COUNT(*) FROM comments WHERE status = '
                                             <span class="badge bg-danger">Rejected</span>
                                         <?php endif; ?>
                                     </td>
-                                    <td><?php echo date('M j, Y', strtotime($comment['created_at'])); ?></td>
+                                    <td><?= date('M j, Y', strtotime($comment['created_at'])); ?></td>
                                     <td>
                                         <?php if ($comment['status'] != 'approved'): ?>
-                                            <a href="comments.php?action=approve&id=<?php echo $comment['id']; ?>"
+                                            <a href="comments.php?action=approve&id=<?= $comment['id']; ?>"
                                                 class="btn btn-sm btn-success">Approve</a>
                                         <?php endif; ?>
                                         <?php if ($comment['status'] != 'rejected'): ?>
-                                            <a href="comments.php?action=reject&id=<?php echo $comment['id']; ?>"
+                                            <a href="comments.php?action=reject&id=<?= $comment['id']; ?>"
                                                 class="btn btn-sm btn-warning">Reject</a>
                                         <?php endif; ?>
-                                        <a href="comments.php?action=delete&id=<?php echo $comment['id']; ?>"
+                                        <a href="comments.php?action=delete&id=<?= $comment['id']; ?>"
                                             class="btn btn-sm btn-danger" onclick="return confirm('Delete?')">Delete</a>
                                     </td>
                                 </tr>
-                            <?php endforeach; ?>
+                            <?php }; ?>
                         </tbody>
                     </table>
                 </div>
@@ -101,7 +99,7 @@ $rejected_comments = $pdo->query("SELECT COUNT(*) FROM comments WHERE status = '
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h4><?php echo $total_comments; ?></h4>
+                                <h4><?= $total_comments; ?></h4>
                                 <p class="mb-0">Total Comments</p>
                             </div>
                             <div class="align-self-center"><i class="bi bi-chat-dots fs-1"></i></div>
@@ -115,7 +113,7 @@ $rejected_comments = $pdo->query("SELECT COUNT(*) FROM comments WHERE status = '
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h4><?php echo $pending_comments; ?></h4>
+                                <h4><?= $pending_comments; ?></h4>
                                 <p class="mb-0">Pending</p>
                             </div>
                             <div class="align-self-center"><i class="bi bi-clock fs-1"></i></div>
@@ -129,7 +127,7 @@ $rejected_comments = $pdo->query("SELECT COUNT(*) FROM comments WHERE status = '
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h4><?php echo $approved_comments; ?></h4>
+                                <h4><?= $approved_comments; ?></h4>
                                 <p class="mb-0">Approved</p>
                             </div>
                             <div class="align-self-center"><i class="bi bi-check-circle fs-1"></i></div>
@@ -143,7 +141,7 @@ $rejected_comments = $pdo->query("SELECT COUNT(*) FROM comments WHERE status = '
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <div>
-                                <h4><?php echo $rejected_comments; ?></h4>
+                                <h4><?= $rejected_comments; ?></h4>
                                 <p class="mb-0">Rejected</p>
                             </div>
                             <div class="align-self-center"><i class="bi bi-x-circle fs-1"></i></div>

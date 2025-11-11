@@ -7,6 +7,7 @@
 
 <div class="container mt-4 mb-4">
     <h1 class="mb-4 text-center fw-bold">Latest Posts</h1>
+    <i class="bi bi-trash"></i>
 
     <div class="row g-4">
         <?php foreach ($posts as $post): ?>
@@ -14,7 +15,7 @@
             <div class="card shadow-sm h-100">
 
                 <?php if (!empty($post['image'])): ?>
-                    <img src="uploads/<?php echo htmlspecialchars($post['image']); ?>"
+                    <img src="uploads/<?= $post['image']; ?>"
                          class="card-img-top"
                          style="height:200px; object-fit:cover;">
                 <?php else: ?>
@@ -22,13 +23,13 @@
                 <?php endif; ?>
 
                 <div class="card-body d-flex flex-column">
-                    <h5 class="card-title fw-bold"><?php echo htmlspecialchars($post['title']); ?></h5>
+                    <h5 class="card-title fw-bold"><?=  $post['title']; ?></h5>
                     <p class="text-muted mb-1">
-                        <?php echo date('F j, Y', strtotime($post['created_at'])); ?>
+                        <?= date('F j, Y', strtotime($post['created_at'])); ?>
                     </p>
 
                     <p class="card-text">
-                        <?php echo mb_substr(strip_tags($post['content']), 0, 120) . "..."; ?>
+                        <?=  mb_substr(strip_tags($post['content']), 0, 120) . "..."; ?>
                     </p>
 
                     <a href="post.php?id=<?php echo $post['id']; ?>" class="btn btn-primary mt-auto w-100">

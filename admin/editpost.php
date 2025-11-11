@@ -1,5 +1,5 @@
 <?php
-require_once '../config/database.php';
+include '../config/database.php';
 include 'includes/header.php';
 include 'includes/sidebar.php';
 
@@ -8,12 +8,12 @@ if (!isset($_GET['id'])) {
   exit;
 }
 
-$post_id = (int) $_GET['id'];
+$post_id =  $_GET['id'];
 
 // Fetch post data
 $stmt = $pdo->prepare("SELECT * FROM posts WHERE id = ?");
 $stmt->execute([$post_id]);
-$post = $stmt->fetch(PDO::FETCH_ASSOC);
+$post = $stmt->fetch();
 
 if (!$post) {
   echo "<div class='alert alert-danger m-4'>Post not found!</div>";
@@ -24,7 +24,7 @@ if (!$post) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $title = $_POST['title'] ?? '';
   $content = $_POST['content'] ?? '';
-  $category_id = (int) ($_POST['category_id'] ?? 0);
+  $category_id =$_POST['category_id'] ?? 0;
   $status = $_POST['status'] ?? 'draft';
 
   $image = $post['image'];
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Get categories
-$cats = $pdo->query("SELECT * FROM categories")->fetchAll(PDO::FETCH_ASSOC);
+$cats = $pdo->query("SELECT * FROM categories")->fetchAll();
 ?>
 
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
@@ -62,25 +62,25 @@ $cats = $pdo->query("SELECT * FROM categories")->fetchAll(PDO::FETCH_ASSOC);
 
           <div class="mb-3">
             <label class="form-label">Title *</label>
-            <input type="text" class="form-control" name="title" value="<?php echo $post['title']; ?>"
+            <input type="text" class="form-control" name="title" value="<?= $post['title']; ?>"
               required>
           </div>
 
           <div class="mb-3">
             <label class="form-label">Content *</label>
             <textarea class="form-control" rows="6" name="content"
-              required><?php echo $post['content']; ?></textarea>
+              required><?= $post['content']; ?></textarea>
           </div>
 
           <div class="mb-3">
             <label class="form-label">Category *</label>
             <select class="form-select" name="category_id" required>
-              <?php foreach ($cats as $c): ?>
-                <option value="<?php echo $c['id']; ?>" <?php if ($post['category_id'] == $c['id'])
+              <?php foreach ($cats as $c){ ?>
+                <option value="<?= $c['id']; ?>" <?php if ($post['category_id'] == $c['id'])
                      echo 'selected'; ?>>
-                  <?php echo $c['name']; ?>
+                  <?= $c['name']; ?>
                 </option>
-              <?php endforeach; ?>
+              <?php }; ?>
             </select>
           </div>
 
@@ -97,7 +97,7 @@ $cats = $pdo->query("SELECT * FROM categories")->fetchAll(PDO::FETCH_ASSOC);
           <div class="mb-3">
             <label class="form-label">Current Image</label><br>
             <?php if (!empty($post['image'])): ?>
-              <img src="../uploads/<?php echo $post['image']; ?>" width="150" class="rounded mb-2">
+              <img src="../uploads/<?= $post['image']; ?>" width="150" class="rounded mb-2">
             <?php else: ?>
               <p class="text-muted">No image uploaded</p>
             <?php endif; ?>

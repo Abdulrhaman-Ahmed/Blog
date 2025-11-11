@@ -1,23 +1,30 @@
 <?php
-require_once '../config/database.php';
+include '../config/database.php';
 include 'includes/header.php';
 include 'includes/sidebar.php';
 
 
-$message = '';
-$message_type = '';
-
 // delete post
 if (isset($_GET['del_id'])) {
-    $del_id = (int) $_GET['del_id'];
+    $del_id = $_GET['del_id'];
+    $stmt = $pdo->prepare("SELECT image FROM posts WHERE id = ?");
+    $stmt->execute([$del_id]);
+    $post = $stmt->fetch();
+
+    if (!empty($post['image'])) {
+        $image_path = '../uploads/' . $post['image'];
+        unlink($image_path);
+    }
     $stmt = $pdo->prepare("DELETE FROM posts WHERE id = ?");
     $stmt->execute([$del_id]);
+
     header('Location: posts.php');
     exit;
 }
 
+
 $stmt = $pdo->query("SELECT * FROM posts ORDER BY created_at DESC");
-$posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$posts = $stmt->fetchAll();
 ?>
 
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
@@ -47,26 +54,26 @@ $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($posts as $post): ?>
+                        <?php foreach ($posts as $post){ ?>
                             <tr>
-                                <td><?php echo $post['id']; ?></td>
-                                <td><?php echo $post['title']; ?></td>
-                                <td><?php echo $post['category_id']; ?></td>
+                                <td><?= $post['id']; ?></td>
+                                <td><?= $post['title']; ?></td>
+                                <td><?= $post['category_id']; ?></td>
                                 <td>
-                                    <?php echo $post['status'] === 'published'
+                                    <?=  $post['status'] === 'published'
                                         ? '<span class="badge bg-success">Published</span>'
                                         : '<span class="badge bg-secondary">Draft</span>'; ?>
                                 </td>
-                                <td><?php echo $post['views']; ?></td>
-                                <td><?php echo date('M j, Y', strtotime($post['created_at'])); ?></td>
+                                <td><?=  $post['views']; ?></td>
+                                <td><?=  date('M j, Y', strtotime($post['created_at'])); ?></td>
                                 <td>
-                                    <a href="editpost.php?id=<?php echo $post['id']; ?>"
+                                    <a href="editpost.php?id=<?= $post['id']; ?>"
                                         class="btn btn-sm btn-primary">Edit</a>
-                                    <a href="posts.php?del_id=<?php echo $post['id']; ?>" class="btn btn-sm btn-danger"
+                                    <a href="posts.php?del_id=<?= $post['id']; ?>" class="btn btn-sm btn-danger"
                                         onclick="return confirm('Delete this post?')">Delete</a>
                                 </td>
                             </tr>
-                        <?php endforeach; ?>
+                        <?php }; ?>
                     </tbody>
                 </table>
             </div>

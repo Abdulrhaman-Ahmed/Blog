@@ -1,5 +1,5 @@
 <?php
-require_once '../config/database.php';
+include '../config/database.php';
 include 'includes/Header.php';
 include 'includes/sidebar.php';
 
@@ -55,8 +55,8 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
         <?php if ($message): ?>
-            <div class="alert alert-<?php echo $message_type; ?> alert-dismissible fade show" role="alert">
-                <?php echo $message; ?>
+            <div class="alert alert-<?= $message_type; ?> alert-dismissible fade show" role="alert">
+                <?= $message; ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         <?php endif; ?>
@@ -103,14 +103,14 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <tbody>
                             <?php foreach ($categories as $category): ?>
                                 <tr>
-                                    <td><?php echo $category['id']; ?></td>
-                                    <td><?php echo $category['name']; ?></td>
-                                    <td><?php echo $category['description']; ?></td>
-                                    <td><?php echo $category['created_at']; ?></td>
+                                    <td><?= $category['id']; ?></td>
+                                    <td><?= $category['name']; ?></td>
+                                    <td><?= $category['description']; ?></td>
+                                    <td><?= $category['created_at']; ?></td>
                                     <td>
-                                        <a href="categories.php?edit_id=<?php echo $category['id']; ?>"
+                                        <a href="categories.php?edit_id=<?= $category['id']; ?>"
                                             class="btn btn-sm btn-primary"><i class="bi bi-pencil"></i> Edit</a>
-                                        <a href="categories.php?del_id=<?php echo $category['id']; ?>"
+                                        <a href="categories.php?del_id=<?= $category['id']; ?>"
                                             class="btn btn-sm btn-danger"
                                             onclick="return confirm('Delete this category?')"><i class="bi bi-trash"></i>
                                             Delete</a>
@@ -125,7 +125,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         <?php
         if (isset($_GET['edit_id'])) {
-            $edit_id = (int) $_GET['edit_id'];
+            $edit_id = $_GET['edit_id'];
             $s = $pdo->prepare("SELECT * FROM categories WHERE id = ?");
             $s->execute([$edit_id]);
             $cat = $s->fetch(PDO::FETCH_ASSOC);
@@ -139,13 +139,11 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <form method="POST" class="row g-3">
                             <div class="col-md-4">
                                 <label class="form-label">Category Name *</label>
-                                <input type="text" class="form-control" name="name"
-                                    value="<?php echo $cat['name']; ?>">
+                                <input type="text" class="form-control" name="name" value="<?= $cat['name']; ?>">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Description</label>
-                                <input type="text" class="form-control" name="description"
-                                    value="<?php echo $cat['description']; ?>">
+                                <input type="text" class="form-control" name="description" value="<?= $cat['description']; ?>">
                             </div>
                             <div class="col-md-2">
                                 <label class="form-label">&nbsp;</label>

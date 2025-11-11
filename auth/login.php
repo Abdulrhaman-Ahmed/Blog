@@ -1,12 +1,12 @@
 <?php
-// auth/login.php - very basic (for demo only)
+// auth/login.php
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $_POST['username'] ?? '';
     $pass = $_POST['password'] ?? '';
 
-    // hardcoded demo credentials: admin / admin123
+    // Username and password admin / admin123
     if ($user === 'admin' && $pass === 'admin123') {
         $_SESSION['admin'] = true;
         header('Location: ../admin/index.php');
