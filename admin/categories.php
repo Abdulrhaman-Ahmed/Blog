@@ -101,7 +101,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($categories as $category): ?>
+                            <?php foreach ($categories as $category){ ?>
                                 <tr>
                                     <td><?= $category['id']; ?></td>
                                     <td><?= $category['name']; ?></td>
@@ -116,7 +116,7 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             Delete</a>
                                     </td>
                                 </tr>
-                            <?php endforeach; ?>
+                            <?php }; ?>
                         </tbody>
                     </table>
                 </div>
@@ -146,7 +146,6 @@ $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <input type="text" class="form-control" name="description" value="<?= $cat['description']; ?>">
                             </div>
                             <div class="col-md-2">
-                                <label class="form-label">&nbsp;</label>
                                 <button type="submit" class="btn btn-warning w-100" name="update_category"><i
                                         class="bi bi-pencil-square"></i> Update</button>
                             </div>
