@@ -1,5 +1,5 @@
 <?php
-require_once 'config/database.php';
+require_once 'config/config.php';
 $post_id = (int) ($_GET['id'] ?? 0);
 
 $stmt = $pdo->prepare("SELECT * FROM posts WHERE id = ? AND status = 'published'");
@@ -15,9 +15,9 @@ $pdo->prepare("UPDATE posts SET views = views + 1 WHERE id = ?")->execute([$post
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = trim($_POST['name'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $comment = trim($_POST['comment'] ?? '');
+    $name = $_POST['name'];
+    $email = $_POST['email'] ;
+    $comment = $_POST['comment'];
     if ($name && $email && $comment) {
         $pdo->prepare("INSERT INTO comments (post_id, name, email, comment) VALUES (?, ?, ?, ?)")
             ->execute([$post_id, $name, $email, $comment]);
@@ -44,7 +44,7 @@ $comments = $comments_stmt->fetchAll();
             <div class="col-md-8">
 
                 <article>
-                    <h1 class="mb-3"><?php echo htmlspecialchars($post['title']); ?></h1>
+                    <h1 class="mb-3"><?= $post['title']; ?></h1>
 
                     <div class="text-muted mb-4">
                         Published: <?php echo date('F j, Y', strtotime($post['created_at'])); ?> |
@@ -52,12 +52,12 @@ $comments = $comments_stmt->fetchAll();
                     </div>
 
                     <?php if (!empty($post['image'])): ?>
-                        <img src="uploads/<?php echo htmlspecialchars($post['image']); ?>"
-                            alt="<?php echo htmlspecialchars($post['title']); ?>" class="img-fluid mb-4 rounded">
+                        <img src="uploads/<?=$post['image']; ?>"
+                            alt="<?= $post['title']; ?>" class="img-fluid mb-4 rounded">
                     <?php endif; ?>
 
                     <div class="post-content mb-4">
-                        <?php echo nl2br(htmlspecialchars($post['content'])); ?>
+                        <?=  $post['content']; ?>
                     </div>
 
                     <a href="index.php" class="btn btn-primary">Back to Posts</a>
@@ -87,13 +87,13 @@ $comments = $comments_stmt->fetchAll();
                     </form>
 
                     <!-- Comments List -->
-                    <?php foreach ($comments as $c): ?>
+                    <?php foreach ($comments as $c){ ?>
                         <div class="border p-3 mb-2">
-                            <strong><?php echo htmlspecialchars($c['name']); ?></strong>
-                            <small class="text-muted"> - <?php echo $c['created_at']; ?></small>
-                            <p class="mb-0"><?php echo nl2br(htmlspecialchars($c['comment'])); ?></p>
+                            <strong><?php $c['name']; ?></strong>
+                            <small class="text-muted"> - <?=   $c['created_at']; ?></small>
+                            <p class="mb-0"><?=  $c['comment']; ?></p>
                         </div>
-                    <?php endforeach; ?>
+                    <?php }; ?>
 
                 </div>
             </div>

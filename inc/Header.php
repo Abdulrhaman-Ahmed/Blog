@@ -1,4 +1,4 @@
-<?php include 'config/database.php';
+<?php include 'config/config.php';
 $posts = $pdo->query("SELECT * FROM posts WHERE status='published' ORDER BY created_at DESC")->fetchAll();
 ?>
 <base href="http://localhost/php_blog_project/">
