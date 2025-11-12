@@ -1,9 +1,11 @@
 <?php include("./inc/Header.php") ?>
 <nav class="navbar navbar-dark bg-dark">
-    <div class="container">
+    <div class="container d-flex">
         <a class="navbar-brand fw-bold" href="index.php">My Blog</a>
+        <a class="btn btn-outline-light ms-auto" href="./auth/login.php">Login To Admin DashBoard</a>
     </div>
 </nav>
+
 
 <div class="container mt-4 mb-4">
     <h1 class="mb-4 text-center fw-bold">Latest Posts</h1>
