@@ -40,8 +40,8 @@ if (isset($_GET['del_id'])) {
 // update category
 if (isset($_POST['update_category']) && isset($_GET['edit_id'])) {
     $edit_id =  $_GET['edit_id'];
-    $name = $_POST['name'] ?? '';
-    $description = $_POST['description'] ?? '';
+    $name = $_POST['name'] ;
+    $description = $_POST['description'];
     if (empty($name)) {
         $message = 'Category name is required!';
         $message_type = 'danger';
